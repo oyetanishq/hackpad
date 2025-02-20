@@ -1,4 +1,4 @@
-import { useState, FormEvent } from "react";
+import { useState, FormEvent, useEffect } from "react";
 import { SunIcon } from "@heroicons/react/24/outline";
 import classNames from "classnames";
 
@@ -11,13 +11,33 @@ export default function SigninForm() {
 	const [email, setEmail] = useState<string>("");
 	const [password, setPassword] = useState<string>("");
 
+	useEffect(() => {
+		setError("");
+		setEmail("");
+		setPassword("");
+	}, [task]);
+
 	const submitForm = async (event: FormEvent<HTMLFormElement>): Promise<void> => {
 		event.preventDefault();
 		try {
 			setSpinning(true);
 
-			console.log({ email, password, task });
+			await fetch(import.meta.env.VITE_API_URL + "/auth/" + (task ? "login" : "register"), {
+				method: "POST",
+				headers: {
+					"Content-Type": "application/json",
+				},
+				body: JSON.stringify({ email, password }),
+			})
+				.then((res) => res.json())
+				.then((data) => {
+					if (data.success) {
+						localStorage.setItem("token", data.user.token);
+						window.location.reload();
+					} else setError(data.error);
+				});
 		} catch (error) {
+			setError((error as Error).message);
 		} finally {
 			setSpinning(false);
 		}
@@ -38,7 +58,7 @@ export default function SigninForm() {
 					type="email"
 					name="email"
 					placeholder="Email address"
-					className={classNames("px-6 py-4 h-full border border-slate-200 rounded md:placeholder:text-base md:placeholder:font-medium text-slate-700 focus:border-slate-500 w-full placeholder:text-sm text-sm outline-none", error.length > 0 ? "border-red-600" : "")}
+					className="px-6 py-4 h-full border border-slate-200 rounded md:placeholder:text-base md:placeholder:font-medium text-slate-700 focus:border-slate-500 w-full placeholder:text-sm text-sm outline-none"
 					autoCapitalize="off"
 					autoComplete="off"
 					onChange={(e) => setEmail(e.target.value)}
@@ -52,7 +72,7 @@ export default function SigninForm() {
 					type="password"
 					name="password"
 					placeholder="Password"
-					className={classNames("px-6 py-4 mt-4 h-full border border-slate-200 rounded md:placeholder:text-base md:placeholder:font-medium text-slate-700 focus:border-slate-500 w-full placeholder:text-sm text-sm outline-none", error.length > 0 ? "border-red-600" : "")}
+					className="px-6 py-4 mt-4 h-full border border-slate-200 rounded md:placeholder:text-base md:placeholder:font-medium text-slate-700 focus:border-slate-500 w-full placeholder:text-sm text-sm outline-none"
 					autoCapitalize="off"
 					autoComplete="off"
 					onChange={(e) => setPassword(e.target.value)}
@@ -61,14 +81,14 @@ export default function SigninForm() {
 					required={true}
 					value={password}
 				/>
-				{error.length > 0 && (
-					<label htmlFor="password" className="text-red-600 absolute -bottom-7 text-sm font-medium">
-						{error}
-					</label>
-				)}
-				<div className={classNames("h-12 mt-5 md:mt-8", error.length > 0 ? "mt-12 md:mt-14" : "")}>
+				<div className={classNames("h-12 relative", error.length > 0 ? "mt-8" : "mt-5 md:mt-8")}>
+					{error.length > 0 && (
+						<label htmlFor="password" className="text-red-600 absolute -top-6 left-0 text-sm font-medium">
+							{error}
+						</label>
+					)}
 					<button type="submit" className={"h-full w-32 flex justify-center items-center rounded font-semibold md:font-bold text-sm duration-300 bg-yellow-600 hover:bg-yellow-700 text-slate-100"} disabled={spinning}>
-						{spinning ? <SunIcon height={25} color={"#fff"} /> : task ? "Login" : "Register"}
+						{spinning ? <SunIcon className="animate-spin" height={25} color={"#fff"} /> : task ? "Login" : "Register"}
 					</button>
 				</div>
 			</div>

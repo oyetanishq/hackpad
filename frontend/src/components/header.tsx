@@ -3,7 +3,7 @@ import { Link } from "react-router";
 import Signin from "@/components/signin";
 
 interface Params {
-	status: string;
+	status: "signin" | "logout";
 }
 
 export default function Header({ status }: Params) {
@@ -19,9 +19,18 @@ export default function Header({ status }: Params) {
 			</Link>
 
 			{/* status */}
-			<div onClick={() => (status === "signin" ? setSigninState(true) : undefined)} className="z-10 flex justify-center items-center flex-row group cursor-pointer relative px-1 overflow-hidden">
+			<div
+				onClick={() => {
+					if (status === "signin") setSigninState(true);
+					else {
+						localStorage.removeItem("token");
+						window.location.reload();
+					}
+				}}
+				className="z-10 flex justify-center items-center flex-row group cursor-pointer relative px-1 overflow-hidden"
+			>
 				<p className="text-lg text-gray-900 tracking-tighter">{status}</p>
-				<div hidden={status !== "signin"} className="absolute h-2/5 w-full transition duration-300 bottom-1 group-hover:translate-x-0 group-active:translate-x-0 translate-x-4 left-0 right-0 bg-yellow-500 -z-10 rounded-sm"></div>
+				<div className="absolute h-2/5 w-full transition duration-300 bottom-1 group-hover:translate-x-0 group-active:translate-x-0 translate-x-4 left-0 right-0 bg-yellow-500 -z-10 rounded-sm"></div>
 			</div>
 		</header>
 	);

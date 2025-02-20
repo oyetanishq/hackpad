@@ -5,6 +5,7 @@ import Footer from "@/components/footer";
 
 export default function Layout() {
 	const [minHeight, setMinHeight] = useState("0px");
+	const [signedIn] = useState(() => (localStorage.getItem("token") ? 1 : 0));
 
 	const resetMinHeight = () => {
 		const header = document.getElementsByTagName("header")[0]!;
@@ -20,7 +21,7 @@ export default function Layout() {
 
 	return (
 		<div className="bg-white shadow-md rounded-md relative">
-			<Header status="signin" />
+			<Header status={signedIn ? "logout" : "signin"} />
 			<main style={{ minHeight }}>
 				<Outlet />
 			</main>
