@@ -4,9 +4,11 @@
 	"main": "index.ts",
 	"license": "MIT",
 	"scripts": {
-        "start": "node dist/index.js",
+		"start": "node dist/index.js",
 		"dev": "ts-node-dev index.ts",
-        "build": "tsc"
+		"build": "rimraf dist && tsc",
+		"ts.check": "tsc --project tsconfig.json",
+		"add-build": "git add dist"
 	},
 	"dependencies": {
 		"bcrypt": "^5.1.1",
@@ -25,7 +27,14 @@
 		"@types/jsonwebtoken": "^9.0.8",
 		"@types/mongoose": "^5.11.97",
 		"@types/node": "^22.13.4",
+		"pre-commit": "^1.2.2",
+		"rimraf": "^6.0.1",
 		"ts-node-dev": "^2.0.0",
 		"typescript": "^5.7.3"
-	}
+	},
+	"pre-commit": [
+		"ts.check",
+		"build",
+		"add-build"
+	]
 }

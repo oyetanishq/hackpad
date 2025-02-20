@@ -12,7 +12,7 @@ const authenticated: RequestHandler = (req, res, next) => {
 		if (!token) throw new Error();
 
 		const user = verify(token.split(" ")[1], process.env.JWT_SECRET as string) as IUser;
-        
+
 		(req as any).userId = user._id;
 		next();
 	} catch (error) {

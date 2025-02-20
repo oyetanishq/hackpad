@@ -1,8 +1,8 @@
 import express, { Application } from "express";
-import routes from "./router/index";
+import routes from "./src/router/index";
 import dotenv from "dotenv";
 import cors from "cors";
-import connectToDB from "./database/connection";
+import connectToDB from "./src/database/connection";
 
 
 /* CONFIGURATION */

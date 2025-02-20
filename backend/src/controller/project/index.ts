@@ -11,7 +11,7 @@ export const createProject: RequestHandler = async (req, res) => {
 		const name = req.body.name;
 		const description = req.body?.description ?? "";
 		const accessTo = (req.body?.accessTo ?? []) as string[];
-        accessTo.push((req as any).userId);
+		accessTo.push((req as any).userId);
 
 		const project = new Project({ name, description, accessTo, uid: (req as any).userId });
 		await project.save();
