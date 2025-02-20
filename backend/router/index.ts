@@ -10,6 +10,7 @@ const router = Router();
  * @route /health-check
  * @method GET
  */
+router.get("/", controller.healthCheck);
 router.get("/health-check", controller.healthCheck);
 
 /**
