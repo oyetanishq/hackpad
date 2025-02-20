@@ -3,7 +3,7 @@ import { SunIcon } from "@heroicons/react/24/outline";
 import classNames from "classnames";
 
 export default function SigninForm() {
-	const [task, setTask] = useState(false); // 1->login, 0->register
+	const [task, setTask] = useState(true); // 1->login, 0->register
 
 	const [error, setError] = useState("");
 	const [spinning, setSpinning] = useState<boolean>(false);
@@ -21,6 +21,7 @@ export default function SigninForm() {
 		event.preventDefault();
 		try {
 			setSpinning(true);
+            setError("");
 
 			await fetch(import.meta.env.VITE_API_URL + "/auth/" + (task ? "login" : "register"), {
 				method: "POST",
