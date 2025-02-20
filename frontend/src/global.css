@@ -1,0 +1,39 @@
+@import url("https://fonts.googleapis.com/css2?family=League+Spartan:wght@100..900&display=swap");
+@import url('https://fonts.googleapis.com/css2?family=Chakra+Petch:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+    --chakra-petch: 'Chakra Petch', sans-serif;
+}
+
+* {
+	margin: 0;
+	padding: 0;
+}
+
+html,
+body {
+	padding: 4px !important;
+	background-color: aliceblue;
+
+	/* fonts */
+	font-family: "League Spartan", serif;
+	font-style: normal;
+	font-optical-sizing: auto;
+
+	/* hide scrollbar */
+	overflow: auto;
+	scrollbar-width: none;
+	-ms-overflow-style: none;
+}
+
+*::selection {
+	background-color: #fce9bc;
+}
+
+*::-webkit-scrollbar {
+	display: none;
+}
