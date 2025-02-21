@@ -170,7 +170,7 @@ const SendEnviteButton = ({ accessTo, _id, uid }: IProject) => {
 		}
 	};
 
-	const onClickXMark = async () => {
+	const onClickXMark = async (email: string) => {
 		try {
 			setSpinning(true);
 			const token = localStorage.getItem("token")!;
@@ -228,7 +228,7 @@ const SendEnviteButton = ({ accessTo, _id, uid }: IProject) => {
 								<p className="text-sm italic" key={email}>
 									{email}
 								</p>
-								<XMarkIcon onClick={onClickXMark} className="rounded-full border border-black hover:text-red-800 hover:border-red-800 duration-300 cursor-pointer p-1 flex justify-center items-center size-5 stroke-2" />
+								<XMarkIcon onClick={() => onClickXMark(email)} className="rounded-full border border-black hover:text-red-800 hover:border-red-800 duration-300 cursor-pointer p-1 flex justify-center items-center size-5 stroke-2" />
 							</div>
 						))}
 					</div>
