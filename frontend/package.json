@@ -16,14 +16,17 @@
     "classnames": "^2.5.1",
     "mobile-detect": "^1.4.5",
     "monaco-themes": "^0.4.4",
+    "prismjs": "^1.29.0",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "react-router": "^7.2.0",
+    "react-simple-code-editor": "^0.14.1",
     "tailwindcss": "3"
   },
   "devDependencies": {
     "@eslint/js": "^9.19.0",
     "@types/node": "^22.13.4",
+    "@types/prismjs": "^1.26.5",
     "@types/react": "^19.0.8",
     "@types/react-dom": "^19.0.3",
     "@vitejs/plugin-react": "^4.3.4",
