@@ -20,7 +20,7 @@ export const register: RequestHandler = async (req, res) => {
 		const user = new User({ email, password: hashedPassword });
 		await user.save();
 
-		res.status(201).json({ success: true, user: { id: user._id, email: user.email, token: generateToken(user._id as string) } });
+		res.status(201).json({ success: true, user: { id: user._id, email: user.email, token: generateToken(user._id as string, user.email) } });
 	} catch (error) {
 		res.status(400).json({ success: false, error: (error as Error).message });
 	}
@@ -39,7 +39,7 @@ export const login: RequestHandler = async (req, res) => {
 		if (!user) throw new Error("invalid credentials");
 		if (!compareSync(password, user.password)) throw new Error("invalid credentials");
 
-		res.status(201).json({ success: true, user: { id: user._id, email: user.email, token: generateToken(user._id as string) } });
+		res.status(201).json({ success: true, user: { id: user._id, email: user.email, token: generateToken(user._id as string, user.email) } });
 	} catch (error) {
 		res.status(401).json({ success: false, error: (error as Error).message });
 	}

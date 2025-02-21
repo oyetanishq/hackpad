@@ -14,6 +14,7 @@ const authenticated: RequestHandler = (req, res, next) => {
 		const user = verify(token.split(" ")[1], process.env.JWT_SECRET as string) as IUser;
 
 		(req as any).userId = user._id;
+		(req as any).userEmail = user.email;
 		next();
 	} catch (error) {
 		res.status(401).json({ error: "Please authenticate using a valid token" });

@@ -6,7 +6,7 @@ import jwt from "jsonwebtoken";
  * @returns string
  * @description generate a token with 30 days validity
  */
-export const generateToken = (_id: string) =>
-	jwt.sign({ _id }, process.env.JWT_SECRET as string, {
+export const generateToken = (_id: string, email: string) =>
+	jwt.sign({ _id, email }, process.env.JWT_SECRET as string, {
 		expiresIn: "30d",
 	});

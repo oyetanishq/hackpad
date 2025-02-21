@@ -11,12 +11,12 @@ export const createProject: RequestHandler = async (req, res) => {
 		const name = req.body.name;
 		const description = req.body?.description ?? "";
 		const accessTo = (req.body?.accessTo ?? []) as string[];
-		accessTo.push((req as any).userId);
+		accessTo.push((req as any).userEmail);
 
 		const project = new Project({ name, description, accessTo, uid: (req as any).userId });
 		await project.save();
 
-		res.status(201).json(project);
+		res.status(201).json({ success: true, project });
 	} catch (error) {
 		res.status(400).json({ success: false, error: (error as Error).message });
 	}
@@ -29,7 +29,7 @@ export const createProject: RequestHandler = async (req, res) => {
  */
 export const updateProject: RequestHandler = async (req, res) => {
 	try {
-		res.status(201).json(await Project.findOneAndUpdate({ _id: req.params.id, uid: (req as any).userId }, { $set: req.body }, { new: true }));
+		res.status(201).json({ success: true, project: await Project.findOneAndUpdate({ _id: req.params.id, uid: (req as any).userId }, { $set: req.body }, { new: true }) });
 	} catch (error) {
 		res.status(400).json({ success: false, error: (error as Error).message });
 	}
@@ -42,7 +42,7 @@ export const updateProject: RequestHandler = async (req, res) => {
  */
 export const getAllProjects: RequestHandler = async (req, res) => {
 	try {
-		res.status(201).json(await Project.find({ accessTo: (req as any).userId }, { content: 0 }));
+		res.status(201).json({ success: true, projects: await Project.find({ accessTo: (req as any).userEmail }, { content: 0 }) });
 	} catch (error) {
 		res.status(400).json({ success: false, error: (error as Error).message });
 	}
@@ -55,7 +55,7 @@ export const getAllProjects: RequestHandler = async (req, res) => {
  */
 export const getProject: RequestHandler = async (req, res) => {
 	try {
-		res.status(201).json(await Project.find({ uid: (req as any).userId }));
+		res.status(201).json({ success: true, project: await Project.find({ uid: (req as any).userId }) });
 	} catch (error) {
 		res.status(400).json({ success: false, error: (error as Error).message });
 	}
@@ -68,7 +68,7 @@ export const getProject: RequestHandler = async (req, res) => {
  */
 export const deleteProject: RequestHandler = async (req, res) => {
 	try {
-		res.status(201).json(await Project.findOneAndDelete({ uid: (req as any).userId, _id: req.params.id }));
+		res.status(201).json({ success: true, project: await Project.findOneAndDelete({ uid: (req as any).userId, _id: req.params.id }) });
 	} catch (error) {
 		res.status(400).json({ success: false, error: (error as Error).message });
 	}
