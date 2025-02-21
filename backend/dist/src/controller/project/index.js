@@ -70,7 +70,7 @@ exports.getAllProjects = getAllProjects;
  */
 const getProject = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        res.status(201).json({ success: true, project: yield Project_1.default.find({ _id: req.params.id, accessTo: req.userEmail }) });
+        res.status(201).json({ success: true, project: (yield Project_1.default.find({ _id: req.params.id, accessTo: req.userEmail }))[0] });
     }
     catch (error) {
         res.status(400).json({ success: false, error: error.message });

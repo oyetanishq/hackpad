@@ -11,8 +11,8 @@ const ProjectSchema = new mongoose_1.Schema({
         default: "",
     },
     content: {
-        type: String,
-        default: "",
+        type: (Array),
+        default: [],
     },
     uid: {
         type: mongoose_1.Schema.Types.ObjectId,

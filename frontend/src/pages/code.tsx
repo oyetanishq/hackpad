@@ -1,5 +1,5 @@
 import { IProject } from "@/components/dashboard/project-card";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useParams } from "react-router";
 import Header from "@/components/header";
 import classNames from "classnames";
@@ -37,6 +37,7 @@ export default function Code() {
 
 	const [socket, setSocket] = useState<WebSocket | null>(null);
 	const [tabs, setTabs] = useState<Tab[]>([]);
+	const tabsRef = useRef<Tab[]>([]);
 
 	const [chats, setChats] = useState<Chat[]>([]);
 	const [message, setMessage] = useState("");
@@ -69,16 +70,44 @@ export default function Code() {
 				})
 					.then((res) => res.json())
 					.then((data) => {
-						if (data.success) setProject(data.project);
-						else throw new Error(data.error);
+						if (data.success) {
+							setProject(data.project);
+							setTabs(data.project.content);
+						} else throw new Error(data.error);
 					});
 			} catch (error) {
 				alert((error as Error).message);
 			}
 		})();
 
-		return () => ws.close();
+		const interval = setInterval(() => {
+			(async () => {
+				try {
+					const token = localStorage.getItem("token")!;
+
+					await fetch(import.meta.env.VITE_API_URL + "/project/" + id, {
+						method: "PUT",
+						headers: {
+							"Content-Type": "application/json",
+							Authorization: `Bearer ${token}`,
+						},
+						body: JSON.stringify({ content: tabsRef.current }),
+					});
+				} catch (error) {
+					alert((error as Error).message);
+				}
+			})();
+		}, 10 * 1000);
+
+		return () => {
+			ws.close();
+			clearInterval(interval);
+		};
 	}, []);
+
+	useEffect(() => {
+		tabsRef.current = tabs;
+	}, [tabs]);
 
 	if (!project || !socket) return "loading...";
 
