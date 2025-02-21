@@ -6,7 +6,7 @@ interface Params {
 
 export default function Footer({ status }: Params) {
 	return (
-		<footer className="mx-auto flex justify-center flex-col items-center">
+		<footer className="w-full mx-auto flex justify-center flex-col items-center">
 			{status === "signin" && (
 				<div className="max-w-screen-xl px-8">
 					<div className="mt-8 grid grid-cols-1 sm:grid-cols-2 gap-8 lg:mt-0 lg:gap-y-16">

@@ -10,7 +10,7 @@ export default function Header({ status }: Params) {
 	const [signinState, setSigninState] = useState(false);
 
 	return (
-		<header className="mx-auto max-w-7xl px-6 pt-10 sm:px-6 lg:px-8 flex justify-between items-center">
+		<header className="w-full mx-auto max-w-7xl px-6 pt-10 sm:px-6 lg:px-8 flex justify-between items-center">
 			<Signin open={signinState} setOpen={setSigninState} />
 
 			{/* title */}

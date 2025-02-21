@@ -19,6 +19,8 @@ body {
 	padding: 4px !important;
 	background-color: aliceblue;
 
+    height: 100%;
+
 	/* fonts */
 	font-family: "League Spartan", serif;
 	font-style: normal;
@@ -28,6 +30,10 @@ body {
 	overflow: auto;
 	scrollbar-width: none;
 	-ms-overflow-style: none;
+}
+
+#root {
+    height: 100%;
 }
 
 *::selection {

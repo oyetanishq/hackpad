@@ -16,7 +16,7 @@ export interface Params {
 
 export default function DropDownMenu({ name, options }: Params) {
 	return (
-		<Menu as="div" className="ml-3 relative">
+		<Menu as="div" className="z-30 ml-3 relative">
 			<Menu.Button className="max-w-xs flex items-center">
 				<h6 className="text-gray-800 font-bold hover:text-gray-500">&ensp;{name}&ensp;</h6>
 			</Menu.Button>

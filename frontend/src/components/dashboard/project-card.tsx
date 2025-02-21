@@ -2,6 +2,7 @@ import { CommandLineIcon, ExclamationTriangleIcon, XMarkIcon, SunIcon } from "@h
 import DropDownMenu, { Option } from "../drop-down-menu";
 import Dialog from "../dialog";
 import { useState } from "react";
+import { Link } from "react-router";
 
 export interface IProject {
 	_id: string;
@@ -198,7 +199,7 @@ const SendEnviteButton = ({ accessTo, _id, uid }: IProject) => {
 	return (
 		<>
 			{uid === userId && (
-				<p className="text-xs tracking-tighter px-2 py-1 border rounded-md bg-yellow-600 hover:bg-yellow-700 active:bg-yellow-600 duration-300 cursor-pointer text-white" onClick={() => setSendEnviteDialogOpen(true)}>
+				<p className="z-20 text-xs tracking-tighter px-2 py-1 border rounded-md bg-yellow-600 hover:bg-yellow-700 active:bg-yellow-600 duration-300 cursor-pointer text-white" onClick={() => setSendEnviteDialogOpen(true)}>
 					Send Envite
 				</p>
 			)}
@@ -239,10 +240,10 @@ const SendEnviteButton = ({ accessTo, _id, uid }: IProject) => {
 };
 
 export default function ProjectCard(project: IProject) {
-	const { name, description, accessTo } = project;
+	const { name, description, accessTo, _id } = project;
 
 	return (
-		<div className="relative bg-slate-100 p-2 duration-300 rounded-md flex flex-col justify-between ">
+		<div className="group relative bg-slate-100 p-2 duration-300 rounded-md flex flex-col justify-between">
 			<div className="flex justify-between items-center p-2 pb-0">
 				<div className="flex h-full justify-center items-center gap-2">
 					<CommandLineIcon className="size-4 stroke-2" />
@@ -251,6 +252,9 @@ export default function ProjectCard(project: IProject) {
 				<TwoDots {...project} />
 			</div>
 
+			<Link to={`/code/${_id}`}>
+				<span aria-hidden="true" className="absolute inset-0" />
+			</Link>
 			<p className="pl-2 pb-1 tracking-tighter text-base font-light text-slate-400">{description}</p>
 
 			<div className="flex-col justify-start items-center border rounded-md p-3 bg-white">

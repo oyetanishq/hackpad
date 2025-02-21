@@ -4,7 +4,7 @@ export interface IProject extends Document {
 	_id: string;
 	name: string;
 	description: string;
-	content: string;
+	content: Schema.Types.Mixed;
 	uid: Schema.Types.ObjectId;
 	accessTo: [Schema.Types.ObjectId];
 }
@@ -19,8 +19,8 @@ const ProjectSchema = new Schema({
 		default: "",
 	},
 	content: {
-		type: String,
-		default: "",
+		type: Schema.Types.Mixed,
+		default: {},
 	},
 	uid: {
 		type: Schema.Types.ObjectId,
