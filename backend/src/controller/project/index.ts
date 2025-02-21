@@ -55,7 +55,7 @@ export const getAllProjects: RequestHandler = async (req, res) => {
  */
 export const getProject: RequestHandler = async (req, res) => {
 	try {
-		res.status(201).json({ success: true, project: await Project.find({ uid: (req as any).userId }) });
+		res.status(201).json({ success: true, project: await Project.find({ _id: req.params.id, accessTo: (req as any).userEmail }) });
 	} catch (error) {
 		res.status(400).json({ success: false, error: (error as Error).message });
 	}
