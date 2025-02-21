@@ -11,6 +11,7 @@ const authenticated = (req, res, next) => {
             throw new Error();
         const user = (0, jsonwebtoken_1.verify)(token.split(" ")[1], process.env.JWT_SECRET);
         req.userId = user._id;
+        req.userEmail = user.email;
         next();
     }
     catch (error) {

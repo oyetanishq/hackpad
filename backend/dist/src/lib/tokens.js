@@ -11,7 +11,7 @@ const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
  * @returns string
  * @description generate a token with 30 days validity
  */
-const generateToken = (_id) => jsonwebtoken_1.default.sign({ _id }, process.env.JWT_SECRET, {
+const generateToken = (_id, email) => jsonwebtoken_1.default.sign({ _id, email }, process.env.JWT_SECRET, {
     expiresIn: "30d",
 });
 exports.generateToken = generateToken;

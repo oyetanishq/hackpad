@@ -25,10 +25,10 @@ const createProject = (req, res) => __awaiter(void 0, void 0, void 0, function* 
         const name = req.body.name;
         const description = (_b = (_a = req.body) === null || _a === void 0 ? void 0 : _a.description) !== null && _b !== void 0 ? _b : "";
         const accessTo = ((_d = (_c = req.body) === null || _c === void 0 ? void 0 : _c.accessTo) !== null && _d !== void 0 ? _d : []);
-        accessTo.push(req.userId);
+        accessTo.push(req.userEmail);
         const project = new Project_1.default({ name, description, accessTo, uid: req.userId });
         yield project.save();
-        res.status(201).json(project);
+        res.status(201).json({ success: true, project });
     }
     catch (error) {
         res.status(400).json({ success: false, error: error.message });
@@ -42,7 +42,7 @@ exports.createProject = createProject;
  */
 const updateProject = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        res.status(201).json(yield Project_1.default.findOneAndUpdate({ _id: req.params.id, uid: req.userId }, { $set: req.body }, { new: true }));
+        res.status(201).json({ success: true, project: yield Project_1.default.findOneAndUpdate({ _id: req.params.id, uid: req.userId }, { $set: req.body }, { new: true }) });
     }
     catch (error) {
         res.status(400).json({ success: false, error: error.message });
@@ -56,7 +56,7 @@ exports.updateProject = updateProject;
  */
 const getAllProjects = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        res.status(201).json(yield Project_1.default.find({ accessTo: req.userId }, { content: 0 }));
+        res.status(201).json({ success: true, projects: yield Project_1.default.find({ accessTo: req.userEmail }, { content: 0 }) });
     }
     catch (error) {
         res.status(400).json({ success: false, error: error.message });
@@ -70,7 +70,7 @@ exports.getAllProjects = getAllProjects;
  */
 const getProject = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        res.status(201).json(yield Project_1.default.find({ uid: req.userId }));
+        res.status(201).json({ success: true, project: yield Project_1.default.find({ uid: req.userId }) });
     }
     catch (error) {
         res.status(400).json({ success: false, error: error.message });
@@ -84,7 +84,7 @@ exports.getProject = getProject;
  */
 const deleteProject = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        res.status(201).json(yield Project_1.default.findOneAndDelete({ uid: req.userId, _id: req.params.id }));
+        res.status(201).json({ success: true, project: yield Project_1.default.findOneAndDelete({ uid: req.userId, _id: req.params.id }) });
     }
     catch (error) {
         res.status(400).json({ success: false, error: error.message });

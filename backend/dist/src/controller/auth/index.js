@@ -30,7 +30,7 @@ const register = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         const hashedPassword = (0, bcrypt_1.hashSync)(password, salt);
         const user = new User_1.default({ email, password: hashedPassword });
         yield user.save();
-        res.status(201).json({ success: true, user: { id: user._id, email: user.email, token: (0, tokens_1.generateToken)(user._id) } });
+        res.status(201).json({ success: true, user: { id: user._id, email: user.email, token: (0, tokens_1.generateToken)(user._id, user.email) } });
     }
     catch (error) {
         res.status(400).json({ success: false, error: error.message });
@@ -50,7 +50,7 @@ const login = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
             throw new Error("invalid credentials");
         if (!(0, bcrypt_1.compareSync)(password, user.password))
             throw new Error("invalid credentials");
-        res.status(201).json({ success: true, user: { id: user._id, email: user.email, token: (0, tokens_1.generateToken)(user._id) } });
+        res.status(201).json({ success: true, user: { id: user._id, email: user.email, token: (0, tokens_1.generateToken)(user._id, user.email) } });
     }
     catch (error) {
         res.status(401).json({ success: false, error: error.message });
