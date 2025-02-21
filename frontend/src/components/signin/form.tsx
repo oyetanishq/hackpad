@@ -21,7 +21,7 @@ export default function SigninForm() {
 		event.preventDefault();
 		try {
 			setSpinning(true);
-            setError("");
+			setError("");
 
 			await fetch(import.meta.env.VITE_API_URL + "/auth/" + (task ? "login" : "register"), {
 				method: "POST",
@@ -34,6 +34,8 @@ export default function SigninForm() {
 				.then((data) => {
 					if (data.success) {
 						localStorage.setItem("token", data.user.token);
+						localStorage.setItem("userEmail", data.user.email);
+						localStorage.setItem("userId", data.user.id);
 						window.location.reload();
 					} else setError(data.error);
 				});

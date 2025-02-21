@@ -13,6 +13,31 @@ const CreateNewProjectDialog = ({ projectDialogOpen, setProjectDialogOpen }: Cre
 	const [description, setDescription] = useState("");
 	const [spinning, setSpinning] = useState<boolean>(false);
 
+	const onClickCreate = async () => {
+		try {
+			setSpinning(true);
+			const token = localStorage.getItem("token")!;
+
+			await fetch(import.meta.env.VITE_API_URL + "/project", {
+				method: "POST",
+				headers: {
+					"Content-Type": "application/json",
+					Authorization: `Bearer ${token}`,
+				},
+				body: JSON.stringify({ name, description }),
+			})
+				.then((res) => res.json())
+				.then((data) => {
+					if (data.success) window.location.reload();
+					else throw new Error(data.error);
+				});
+		} catch (error) {
+			alert((error as Error).message);
+		} finally {
+			setSpinning(false);
+		}
+	};
+
 	return (
 		<Dialog isOpen={projectDialogOpen} setIsOpen={setProjectDialogOpen}>
 			<div className="p-4 relative z-50">
@@ -36,34 +61,7 @@ const CreateNewProjectDialog = ({ projectDialogOpen, setProjectDialogOpen }: Cre
 					<button onClick={() => setProjectDialogOpen(false)} type="button" className="inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 active:bg-white duration-300 sm:text-sm">
 						Cancel
 					</button>
-					<button
-						onClick={async () => {
-							try {
-								setSpinning(true);
-								const token = localStorage.getItem("token")!;
-
-								await fetch(import.meta.env.VITE_API_URL + "/project", {
-									method: "POST",
-									headers: {
-										"Content-Type": "application/json",
-										Authorization: `Bearer ${token}`,
-									},
-									body: JSON.stringify({ name, description }),
-								})
-									.then((res) => res.json())
-									.then((data) => {
-										if (data.success) window.location.reload();
-										else throw new Error(data.error);
-									});
-							} catch (error) {
-								alert((error as Error).message);
-							} finally {
-								setSpinning(false);
-							}
-						}}
-						type="button"
-						className="inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-yellow-600 text-base font-medium text-white hover:bg-yellow-700 active:bg-yellow-600 duration-300 sm:text-sm"
-					>
+					<button onClick={onClickCreate} type="button" className="inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-yellow-600 text-base font-medium text-white hover:bg-yellow-700 active:bg-yellow-600 duration-300 sm:text-sm">
 						{spinning ? <SunIcon className="animate-spin" height={25} color={"#fff"} /> : "Create"}
 					</button>
 				</div>
