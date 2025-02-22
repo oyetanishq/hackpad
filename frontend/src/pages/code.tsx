@@ -4,11 +4,10 @@ import { useParams } from "react-router";
 import Header from "@/components/header";
 import classNames from "classnames";
 import { ChatBubbleLeftEllipsisIcon, FolderIcon } from "@heroicons/react/24/outline";
-import Editor from "react-simple-code-editor";
-import { highlight, languages } from "prismjs";
-import "prismjs/themes/prism-dark.css";
 
-import "prismjs/components/prism-typescript";
+import isDesktopFn from "@/lib/isDesktop";
+import CodeEditorForDesktop from "@/components/editor/desktop";
+import CodeEditorForMobile from "@/components/editor/mobile";
 
 export type Tab = {
 	id: number | string;
@@ -32,6 +31,7 @@ enum IExplorer {
 export default function Code() {
 	const { id } = useParams();
 	const codeId = id;
+	const [isDesktop] = useState(isDesktopFn());
 	const [project, setProject] = useState<IProject>();
 	const [explorer, setExplorer] = useState<IExplorer>(IExplorer.files);
 
@@ -44,6 +44,8 @@ export default function Code() {
 
 	useEffect(() => {
 		const ws = new WebSocket("wss://simple-ws.deno.dev");
+        const token = localStorage.getItem("token")!;
+
 		ws.onopen = () => console.log("connected");
 		ws.onclose = () => console.log("closed");
 		ws.onmessage = ({ data }) => {
@@ -57,10 +59,9 @@ export default function Code() {
 
 		setSocket(ws);
 
+        // fetch project and setup code editor
 		(async () => {
 			try {
-				const token = localStorage.getItem("token")!;
-
 				await fetch(import.meta.env.VITE_API_URL + "/project/" + id, {
 					method: "GET",
 					headers: {
@@ -80,11 +81,10 @@ export default function Code() {
 			}
 		})();
 
+        // auto save every 10 seconds
 		const interval = setInterval(() => {
 			(async () => {
 				try {
-					const token = localStorage.getItem("token")!;
-
 					await fetch(import.meta.env.VITE_API_URL + "/project/" + id, {
 						method: "PUT",
 						headers: {
@@ -115,11 +115,13 @@ export default function Code() {
 		<div className="h-full w-full rounded-md bg-white flex flex-col">
 			<Header status="logout" />
 			<div className="flex-1 border-t mt-10 flex">
+                {/* sidebar */}
 				<div className="w-10 sm:w-12 h-full flex flex-col items-center pt-4 gap-4 px-3 border-r">
 					<FolderIcon onClick={() => setExplorer((exp) => (exp === IExplorer.files ? IExplorer.null : IExplorer.files))} className={classNames("size-5 cursor-pointer")} />
 					<ChatBubbleLeftEllipsisIcon onClick={() => setExplorer((exp) => (exp === IExplorer.chat ? IExplorer.null : IExplorer.chat))} className={classNames("size-5 cursor-pointer")} />
 				</div>
 
+                {/* file structure */}
 				<div className={classNames("h-full duration-300 bg-white p-2 flex-col justify-start items-start w-56", explorer === IExplorer.files ? "flex" : "hidden")}>
 					{tabs.map(({ id, name, active }) => {
 						return (
@@ -155,6 +157,7 @@ export default function Code() {
 					</label>
 				</div>
 
+                {/* chatting section */}
 				<div className={classNames("h-full duration-300 bg-white p-2 flex-col justify-start items-center w-56", explorer === IExplorer.chat ? "flex" : "hidden")}>
 					<p className="underline underline-offset-2">chatting</p>
 					<div className="flex-1 flex flex-col justify-end items-center w-full">
@@ -191,35 +194,26 @@ export default function Code() {
 					</div>
 				</div>
 
+                {/* code tabs */}
 				<div className={classNames("flex-1 overflow-hidden", explorer === IExplorer.null ? "" : "border-l ")}>
 					{tabs.map(({ id, code, active, language, name }) => {
+						const onCodeChange = (newCode: string) => {
+							socket.send(
+								JSON.stringify({
+									type: "sendtoall",
+									message: {
+										type: "code-update",
+										rid: codeId,
+										name,
+										code: newCode,
+									},
+								})
+							);
+						};
+
 						return (
 							<div key={id} className={classNames(active ? "" : "hidden", "overflow-scroll h-full w-full hide-scrollbar")}>
-								<Editor
-									className="editor"
-									value={code}
-									onValueChange={(newCode) => {
-										socket.send(
-											JSON.stringify({
-												type: "sendtoall",
-												message: {
-													type: "code-update",
-													rid: codeId,
-													name,
-													code: newCode,
-												},
-											})
-										);
-									}}
-									highlight={(code) =>
-										highlight(code, languages[language], language)
-											.split("\n")
-											.map((line, i) => `<span class='editorLineNumber'>${i + 1}</span>${line}`)
-											.join("\n")
-									}
-									padding={16}
-									tabSize={4}
-								/>
+								{isDesktop ? <CodeEditorForDesktop language={language} value={code} onChange={onCodeChange} /> : <CodeEditorForMobile language={language} value={code} onChange={onCodeChange} />}
 							</div>
 						);
 					})}
