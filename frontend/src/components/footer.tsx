@@ -7,6 +7,7 @@ interface Params {
 export default function Footer({ status }: Params) {
 	return (
 		<footer className="w-full mx-auto flex justify-center flex-col items-center">
+			{/* site description */}
 			{status === "signin" && (
 				<div className="max-w-screen-xl px-8">
 					<div className="mt-8 grid grid-cols-1 sm:grid-cols-2 gap-8 lg:mt-0 lg:gap-y-16">
@@ -20,32 +21,36 @@ export default function Footer({ status }: Params) {
 								</svg>
 							</div>
 							<div>
-								<h2 className="text-2xl font-bold text-gray-900">Get the latest news!</h2>
-								<p className="mt-4 text-gray-500">Lorem ipsum dolor, sit amet consectetur adipisicing elit. Esse non cupiditate quae nam molestias.</p>
+								<h2 className="text-2xl font-bold text-gray-900">Collaborative Coding Platform for Teams!</h2>
+								<p className="mt-4 text-gray-500">
+									Boost your team's productivity with our all-in-one collaborative coding platform. Create projects, invite team members via email, and work together in real-time. Code, chat, and collaborate seamlessly.
+								</p>
 							</div>
 						</div>
 					</div>
 				</div>
 			)}
+
+			{/* policies section */}
 			<div className="mt-8 border-t bg-yellow-600 flex justify-center items-center w-full rounded-b-md py-2 sm:py-0">
 				<div className="flex flex-col sm:flex-row justify-center items-start sm:justify-between h-12 w-full sm:items-center max-w-screen-xl px-8">
 					<p className="text-xs text-yellow-100">&copy; 2024. Hackpad. All rights reserved.</p>
 
 					<ul className="flex flex-wrap justify-start gap-4 text-xs lg:justify-end pt-2 sm:pt-0">
 						<li>
-							<Link to="/" className="text-yellow-100 transition hover:opacity-75">
+							<Link to="/policy/terms-and-condition" className="text-yellow-100 transition hover:opacity-75">
 								Terms & Conditions
 							</Link>
 						</li>
 
 						<li>
-							<Link to="/" className="text-yellow-100 transition hover:opacity-75">
+							<Link to="/policy/privacy" className="text-yellow-100 transition hover:opacity-75">
 								Privacy Policy
 							</Link>
 						</li>
 
 						<li>
-							<Link to="/" className="text-yellow-100 transition hover:opacity-75">
+							<Link to="/policy/cookies" className="text-yellow-100 transition hover:opacity-75">
 								Cookies
 							</Link>
 						</li>

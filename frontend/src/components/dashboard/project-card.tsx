@@ -206,6 +206,7 @@ const SendEnviteButton = ({ accessTo, _id, uid }: IProject) => {
 			<Dialog isOpen={sendEnviteDialogOpen} setIsOpen={setSendEnviteDialogOpen}>
 				<div className="p-4 pb-0 min-w-56 sm:min-w-80 ">
 					<div className="tracking-tighter flex justify-center items-center gap-2">
+                        {/* email */}
 						<input
 							value={updateEmail}
 							onChange={(e) => setUpdateEmail(e.target.value)}
@@ -219,6 +220,7 @@ const SendEnviteButton = ({ accessTo, _id, uid }: IProject) => {
 							required={true}
 							inputMode="email"
 						/>
+                        {/* send invite button */}
 						<button onClick={onClickAdd} type="button" className="inline-flex justify-center rounded-md border shadow-sm px-4 py-2 bg-yellow-600 hover:bg-yellow-700 active:bg-yellow-600 text-white sm:text-base font-light duration-300 text-sm">
 							{spinning ? <SunIcon className="animate-spin" height={25} color={"#fff"} /> : "Add"}
 						</button>
@@ -244,6 +246,7 @@ export default function ProjectCard(project: IProject) {
 
 	return (
 		<div className="group relative bg-slate-100 p-2 duration-300 rounded-md flex flex-col justify-between">
+            {/* project title and two dots */}
 			<div className="flex justify-between items-center p-2 pb-0">
 				<div className="flex h-full justify-center items-center gap-2">
 					<CommandLineIcon className="size-4 stroke-2" />
@@ -255,8 +258,11 @@ export default function ProjectCard(project: IProject) {
 			<Link to={`/code/${_id}`}>
 				<span aria-hidden="true" className="absolute inset-0" />
 			</Link>
+
+            {/* project description */}
 			<p className="pl-2 pb-1 tracking-tighter text-base font-light text-slate-400">{description}</p>
 
+            {/* invites and emails */}
 			<div className="flex-col justify-start items-center border rounded-md p-3 bg-white">
 				<div className="flex justify-between items-end pb-2">
 					<p className="text-base tracking-tighter underline underline-offset-2">Existing members</p>

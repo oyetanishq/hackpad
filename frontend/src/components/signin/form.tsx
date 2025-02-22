@@ -48,6 +48,7 @@ export default function SigninForm() {
 
 	return (
 		<form onSubmit={submitForm} className="w-full font-[family-name:--chakra-petch]">
+            {/* heading */}
 			<h2 className="font-semibold text-slate-600 md:font-bold text-2xl md:text-3xl">{task ? "Login" : "Register"}</h2>
 			<div className="w-full h-12 flex justify-start items-center">
 				<p className="text-sm md:font-semibold font-normal text-gray-800">or</p>&ensp;
@@ -57,6 +58,7 @@ export default function SigninForm() {
 			</div>
 
 			<div className="w-full h-12 mt-3 md:mt-7 relative">
+                {/* email */}
 				<input
 					type="email"
 					name="email"
@@ -71,6 +73,8 @@ export default function SigninForm() {
 					inputMode="email"
 					value={email}
 				/>
+
+                {/* password */}
 				<input
 					type="password"
 					name="password"
@@ -84,6 +88,8 @@ export default function SigninForm() {
 					required={true}
 					value={password}
 				/>
+
+                {/* submit button and error */}
 				<div className={classNames("h-12 relative", error.length > 0 ? "mt-8" : "mt-5 md:mt-8")}>
 					{error.length > 0 && (
 						<label htmlFor="password" className="text-red-600 absolute -top-6 left-0 text-sm font-medium">
