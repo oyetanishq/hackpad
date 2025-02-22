@@ -130,7 +130,7 @@ export default function Dashboard() {
 	}, []);
 
 	return (
-		<div>
+		<div className="h-full">
 			<CreateNewProjectDialog projectDialogOpen={projectDialogOpen} setProjectDialogOpen={setProjectDialogOpen} />
 
 			<div className="w-full flex justify-between items-center py-4 mt-6">
